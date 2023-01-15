@@ -47,6 +47,23 @@ class TicTacToe:
 
     def is_over(self):
         return self.is_win(self.player) or self.is_win(self.computer) or self.is_tie()
+    
+    def who_start(self):
+        if random.randint(0, 1) == 0:
+            return 'gracz'
+        else:
+            return 'komputer'
+
+    def another_game(self):
+        ans=input('Czy chcesz zagrać ponownie? (t/n)\n')
+        if ans.lower()=='t':
+            return True
+        else:
+            return False
+        
+    def clear_board(self):
+        self.board = [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]
+        self.winner = None
 
     def make_move(self, row, col):
         if self.is_valid(row, col):
@@ -71,12 +88,24 @@ class TicTacToe:
                     break
 
     def play(self):
-        while not self.is_over():
-            self.print_board()
-            row = int(input('Wpisz wiersz: '))
-            col = int(input('Wpisz kolumnę: '))
-            self.make_move(row, col)
-            self.computer_move()
+        print('Witaj w grze kółko i krzyżyk!')
+        start=self.who_start()
+        print(f'Zaczyna {start}!')
+        if start == 'gracz':
+            while not self.is_over():
+                self.print_board()
+                row = int(input('Wpisz wiersz: '))
+                col = int(input('Wpisz kolumnę: '))
+                self.make_move(row, col)
+                self.computer_move()
+        else:
+            while not self.is_over():
+                self.computer_move()
+                if not self.is_over():
+                    self.print_board()
+                    row = int(input('Wpisz wiersz: '))
+                    col = int(input('Wpisz kolumnę: '))
+                    self.make_move(row, col)
         if self.is_win(self.player):
             print('Wygrałeś!')
         elif self.is_win(self.computer):
@@ -84,7 +113,13 @@ class TicTacToe:
         elif self.is_tie():
             print('Remis!')
         self.print_board()
-    
+
+        if self.another_game()==True:
+            self.clear_board()
+            self.play()
+        else:
+            print('Dziękujemy za grę!')
+
 if __name__ == '__main__':
     game = TicTacToe()
     game.play()
