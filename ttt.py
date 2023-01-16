@@ -68,9 +68,10 @@ class TicTacToe:
     def make_move(self, row, col):
         if self.is_valid(row, col):
             self.board[row][col] = self.player
-            # self.player, self.computer = self.computer, self.player
+            return True
         else:
-            print('Nieprawidłowy ruch!')
+            print('Nieprawidłowy ruch!\nSpróbuj ponownie.')
+            return False
 
     def computer_move(self):
         if self.is_win(self.computer):
@@ -96,8 +97,9 @@ class TicTacToe:
                 self.print_board()
                 row = int(input('Wpisz wiersz: '))
                 col = int(input('Wpisz kolumnę: '))
-                self.make_move(row, col)
-                self.computer_move()
+                move=self.make_move(row, col)
+                if move:
+                    self.computer_move()
         else:
             while not self.is_over():
                 self.computer_move()
@@ -105,7 +107,12 @@ class TicTacToe:
                     self.print_board()
                     row = int(input('Wpisz wiersz: '))
                     col = int(input('Wpisz kolumnę: '))
-                    self.make_move(row, col)
+                    move=self.make_move(row, col)
+                    while not move:
+                        self.print_board()
+                        row = int(input('Wpisz wiersz: '))
+                        col = int(input('Wpisz kolumnę: '))
+                        move=self.make_move(row, col)
         if self.is_win(self.player):
             print('Wygrałeś!')
         elif self.is_win(self.computer):
